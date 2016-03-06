@@ -1,6 +1,6 @@
 <?php
 /**
- * Current Agere module
+ * Current module
  *
  * @category Agere
  * @package Agere_Current
