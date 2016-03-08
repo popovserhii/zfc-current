@@ -40,7 +40,8 @@ class Current extends AbstractHelper {
         return $this->currentPlugin;
     }
  
-    public function __invoke(...$params) {
+    public function __invoke() {
+		$params = func_get_args();
         return call_user_func_array($this->getCurrentPlugin(), $params);
     }
 }

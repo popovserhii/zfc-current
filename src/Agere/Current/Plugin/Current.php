@@ -151,8 +151,8 @@ class Current extends AbstractPlugin {
 		return $this->run();
 	}*/
 
-	public function __invoke(...$args) {
-		if (!$args) {
+	public function __invoke() {
+		if (!$args = func_get_args()) {
 			return $this;
 		}
 
