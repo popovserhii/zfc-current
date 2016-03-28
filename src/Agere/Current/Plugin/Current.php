@@ -54,44 +54,75 @@ class Current extends AbstractPlugin {
 		$this->context = $context;
 	}
 
+	public function resetContext() {
+		$this->context = null;
+	}
+
+	public function getModule($context = null) {
+		$modules = $this->getSm()->get('ModuleManager')->getLoadedModules();
+
+		return $modules[$this->currentModule($context)];
+	}
+
+	/**
+	 * * Get current module namespace
+	 *
+	 * @param mixed $context Object, namespace or array of exploded namespace
+	 * @return string
+	 * @throws Exception\RuntimeException
+	 */
+	public function currentModule($context = null) {
+		static $cache;
+
+		$this->context = $context;
+		$context = $this->prepareContext();
+
+		if ($this->context) {
+			$this->context = null;
+		}
+
+		if (isset($cache[$context])) {
+			return $cache[$context];
+		}
+
+		$modules = $this->getSm()->get('ModuleManager')->getLoadedModules();
+
+
+		$delimeter = '\\';
+		$moduleName = '';
+		$parts = explode($delimeter, $context);
+		foreach ($parts as $part) {
+			$moduleName = ltrim($moduleName . $delimeter . $part, $delimeter);
+			if (isset($modules[$moduleName])) {
+				//\Zend\Debug\Debug::dump(get_class($modules[$moduleName])); die(__METHOD__);
+
+				$cache[$context] = $moduleName;
+				break;
+			}
+		}
+
+		if (!$moduleName) {
+			throw new Exception\RuntimeException(sprintf('Not found appropriate module for context %s', $context));
+		}
+
+		return $moduleName;
+	}
+
+
 	protected function prepareContext() {
 		$context = $this->context ?: get_class($this->getController());
+
 		if (is_object($context)) {
 			$context = get_class($context);
-		} elseif (is_array($context)) {
+		} /*elseif (is_array($context)) {
+			$context = implode('\\', $context);
+		}*/
+
+		if (is_array($context)) {
 			$context = implode('\\', $context);
 		}
 
 		return $context;
-	}
-
-	/**
-	 * Get current module namespace
-	 *
-	 * @return string
-	 * @throws Exception\RuntimeException
-	 */
-	public function currentModule() {
-		static $cache;
-
-		$context = $this->prepareContext();
-		if (!isset($cache[$context])) {
-			$delimeter = 'Controller\\'; // @todo can exclude to config
-			$delimeterPos = strpos($context, $delimeter);
-
-			if (false === $delimeterPos) {
-				throw new Exception\RuntimeException(sprintf(
-					'Cannot determine name for controller. Not found delimeter "%s" in class name: %s',
-					$delimeter,
-					$context
-				));
-			}
-
-			$name = substr($context, 0, $delimeterPos - 1);
-			$cache[$context] = $name;
-		}
-
-		return $cache[$context];
 	}
 
 	/**
@@ -115,15 +146,12 @@ class Current extends AbstractPlugin {
 	/**
 	 * Return current route match
 	 *
+	 * Important: Cache is disabled for correct work of forward plugin
+	 *
 	 * @return RouteMatch
 	 */
 	public function currentRoute() {
-		static $routeMatch;
-		if (!$routeMatch) {
-			//$routeMatch = $this->getSm()->get('Application')->getMvcEvent()->getRouteMatch();
-			$routeMatch = $this->getController()->getEvent()->getRouteMatch();
-		}
-		return $routeMatch;
+		return $this->getController()->getEvent()->getRouteMatch();
 	}
 
 	public function currentRouter() {
