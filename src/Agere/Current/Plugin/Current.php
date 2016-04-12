@@ -13,9 +13,9 @@
 
 namespace Agere\Current\Plugin;
 
-use Zend\Stdlib\Exception;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Mvc\Router\RouteMatch;
+use Zend\Stdlib\Exception;
 
 class Current extends AbstractPlugin {
 
