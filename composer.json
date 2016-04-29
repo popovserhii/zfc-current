@@ -1,0 +1,33 @@
+{
+  "name": "popovsergiy/zfc-current",
+  "description": "Plugin and Helper for get current controller, action, route, request and much more",
+  "type": "library",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "zf2",
+    "current",
+    "agere"
+  ],
+  "authors": [
+    {
+      "name": "Sergiy Popov",
+      "email": "popow.sergiy@gmail.com",
+      "homepage": "http://agere.com.ua/",
+      "role": "Developer"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^5.5",
+    "zendframework/zend-stdlib": "~2.7.7",
+    "zendframework/zend-mvc": "~2.7.7"
+  },
+  "autoload": {
+    "psr-0": {
+      "Agere\\Current": "src/"
+    },
+    "classmap": [
+      "./Module.php"
+    ]
+  }
+}
