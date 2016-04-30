@@ -1,7 +1,7 @@
 {
   "name": "popovsergiy/zfc-current",
   "description": "Plugin and Helper for get current controller, action, route, request and much more",
-  "type": "library",
+  "type": "zf-module",
   "license": "BSD-3-Clause",
   "keywords": [
     "zf2",

@@ -44,9 +44,9 @@ class PostController extends AbstractActionController {
 ```php
 // your-module/post/index.phtml
 
-Curent controller : <?= $this->current('controller') ?>
-Curent action : <?= $this->current('action') ?>
-Curent module : <?= $this->current('module') ?>
+Current controller : <?= $this->current('controller') ?>
+Current action : <?= $this->current('action') ?>
+Current module : <?= $this->current('module') ?>
 
 <?php
 $action = $this->url('default/id', [
