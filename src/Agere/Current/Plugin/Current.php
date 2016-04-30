@@ -28,10 +28,6 @@ class Current extends AbstractPlugin {
 	 * @throws Exception\RuntimeException
 	 */
 	public function run($name = self::DEFAULT_NAME) {
-		/*if (!$name) {
-			$name = self::DEFAULT_NAME;
-		}*/
-
 		if (method_exists($this, $method = 'current' . ucfirst($name))) {
 			return $this->{$method}();
 		}
