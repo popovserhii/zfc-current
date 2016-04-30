@@ -89,8 +89,6 @@ class Current extends AbstractPlugin {
 		foreach ($parts as $part) {
 			$moduleName = ltrim($moduleName . $delimeter . $part, $delimeter);
 			if (isset($modules[$moduleName])) {
-				//\Zend\Debug\Debug::dump(get_class($modules[$moduleName])); die(__METHOD__);
-
 				$cache[$context] = $moduleName;
 				break;
 			}
@@ -109,11 +107,7 @@ class Current extends AbstractPlugin {
 
 		if (is_object($context)) {
 			$context = get_class($context);
-		} /*elseif (is_array($context)) {
-			$context = implode('\\', $context);
-		}*/
-
-		if (is_array($context)) {
+		} elseif (is_array($context)) {
 			$context = implode('\\', $context);
 		}
 
