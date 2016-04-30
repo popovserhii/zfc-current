@@ -144,11 +144,7 @@ class Current extends AbstractPlugin {
 	}
 
 	public function currentRouter() {
-		static $router;
-		if (!$router) {
-			$router = $this->getController()->getEvent()->getRouter();
-		}
-		return $router;
+		return $this->getController()->getEvent()->getRouter();
 	}
 
 	public function currentRequest() {
@@ -156,16 +152,8 @@ class Current extends AbstractPlugin {
 	}
 
 	public function currentView() {
-		static $viewRenderer;
-		if (!$viewRenderer) {
-			$viewRenderer = $this->getSm()->get('ViewRenderer');
-		}
-		return $viewRenderer;
+		return $this->getSm()->get('ViewRenderer');
 	}
-
-	/*public function __toString() {
-		return $this->run();
-	}*/
 
 	public function __invoke() {
 		if (!$args = func_get_args()) {
