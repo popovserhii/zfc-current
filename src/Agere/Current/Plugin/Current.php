@@ -10,7 +10,6 @@
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 17.05.15 18:12
  */
-
 namespace Agere\Current\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
