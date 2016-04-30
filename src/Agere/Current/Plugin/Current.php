@@ -146,7 +146,6 @@ class Current extends AbstractPlugin {
 	public function currentRouter() {
 		static $router;
 		if (!$router) {
-			//$router = $this->getSm()->get('Application')->getMvcEvent()->getRouter();
 			$router = $this->getController()->getEvent()->getRouter();
 		}
 		return $router;
