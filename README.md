@@ -12,9 +12,20 @@ Add package to your composer.json
 ```
 
 And update your vendors
-```
+```sh
 $ php composer.phar update popovsergiy/zfc-current
 ```
+
+Don't forget Add `'Agere\Current'` to `config/application.config.php`
+```php
+return [
+    'modules' => [
+    	// ...
+    	'Agere\Current'
+    ]
+]    
+```
+
 
 ## Usage
 
