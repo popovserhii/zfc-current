@@ -2,7 +2,6 @@
 /**
  * Plugin which allow get current names
  * such as namespace, module, controller, action
- *
  * All value is determined relative to current called controller
  *
  * @category Agere
@@ -16,154 +15,155 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Stdlib\Exception;
 
-class Current extends AbstractPlugin {
+class Current extends AbstractPlugin
+{
+    const DEFAULT_NAME = 'module';
 
-	const DEFAULT_NAME = 'module';
+    protected $context;
 
-	protected $context;
+    /**
+     * @param string $name
+     * @return string
+     * @throws Exception\RuntimeException
+     */
+    public function run($name = self::DEFAULT_NAME)
+    {
+        if (method_exists($this, $method = 'current' . ucfirst($name))) {
+            return $this->{$method}();
+        }
+        throw new Exception\RuntimeException(sprintf(
+            'Option with name %s is not supported. Allowed values: module, controller, action, router, route, request, view',
+            $name
+        ));
+    }
 
-	/**
-	 * @param string $name
-	 * @return string
-	 * @throws Exception\RuntimeException
-	 */
-	public function run($name = self::DEFAULT_NAME) {
-		if (method_exists($this, $method = 'current' . ucfirst($name))) {
-			return $this->{$method}();
-		}
+    protected function getSm()
+    {
+        return $this->getController()->getServiceLocator();
+    }
 
-		throw new Exception\RuntimeException(sprintf(
-			'Option with name %s is not supported. Allowed values: module, controller, action, router, route, request, view',
-			$name
-		));
-	}
+    /**
+     * @param mixed $context Controller object or class name
+     */
+    protected function setContext($context)
+    {
+        $this->context = $context;
+    }
 
-	protected function getSm() {
-		return $this->getController()->getServiceLocator();
-	}
+    public function resetContext()
+    {
+        $this->context = null;
+    }
 
-	/**
-	 * @param mixed $context Controller object or class name
-	 */
-	protected function setContext($context) {
-		$this->context = $context;
-	}
+    public function getModule($context = null)
+    {
+        $modules = $this->getSm()->get('ModuleManager')->getLoadedModules();
 
-	public function resetContext() {
-		$this->context = null;
-	}
+        return $modules[$this->currentModule($context)];
+    }
 
-	public function getModule($context = null) {
-		$modules = $this->getSm()->get('ModuleManager')->getLoadedModules();
+    /**
+     * * Get current module namespace
+     *
+     * @param mixed $context Object, namespace or array of exploded namespace
+     * @return string
+     * @throws Exception\RuntimeException
+     */
+    public function currentModule($context = null)
+    {
+        static $cache;
+        $this->context = $context;
+        $context = $this->prepareContext();
+        if ($this->context) {
+            $this->context = null;
+        }
+        if (isset($cache[$context])) {
+            return $cache[$context];
+        }
+        $modules = $this->getSm()->get('ModuleManager')->getLoadedModules();
+        $delimeter = '\\';
+        $moduleName = '';
+        $parts = explode($delimeter, $context);
+        foreach ($parts as $part) {
+            $moduleName = ltrim($moduleName . $delimeter . $part, $delimeter);
+            if (isset($modules[$moduleName])) {
+                $cache[$context] = $moduleName;
+                break;
+            }
+        }
+        if (!$moduleName) {
+            throw new Exception\RuntimeException(sprintf('Not found appropriate module for context %s', $context));
+        }
 
-		return $modules[$this->currentModule($context)];
-	}
+        return $moduleName;
+    }
 
-	/**
-	 * * Get current module namespace
-	 *
-	 * @param mixed $context Object, namespace or array of exploded namespace
-	 * @return string
-	 * @throws Exception\RuntimeException
-	 */
-	public function currentModule($context = null) {
-		static $cache;
+    protected function prepareContext()
+    {
+        $context = $this->context ?: get_class($this->getController());
+        if (is_object($context)) {
+            $context = get_class($context);
+        } elseif (is_array($context)) {
+            $context = implode('\\', $context);
+        }
 
-		$this->context = $context;
-		$context = $this->prepareContext();
+        return $context;
+    }
 
-		if ($this->context) {
-			$this->context = null;
-		}
+    /**
+     * Get current route controller name
+     *
+     * @return string
+     */
+    public function currentController()
+    {
+        return $this->currentRoute()->getParam('controller');
+    }
 
-		if (isset($cache[$context])) {
-			return $cache[$context];
-		}
+    /**
+     * Get current route action name
+     *
+     * @return string
+     */
+    public function currentAction()
+    {
+        return $this->currentRoute()->getParam('action');
+    }
 
-		$modules = $this->getSm()->get('ModuleManager')->getLoadedModules();
+    /**
+     * Return current route match
+     * Important: Cache is disabled for correct work of forward plugin
+     *
+     * @return RouteMatch
+     */
+    public function currentRoute()
+    {
+        return $this->getController()->getEvent()->getRouteMatch();
+    }
 
+    public function currentRouter()
+    {
+        return $this->getController()->getEvent()->getRouter();
+    }
 
-		$delimeter = '\\';
-		$moduleName = '';
-		$parts = explode($delimeter, $context);
-		foreach ($parts as $part) {
-			$moduleName = ltrim($moduleName . $delimeter . $part, $delimeter);
-			if (isset($modules[$moduleName])) {
-				$cache[$context] = $moduleName;
-				break;
-			}
-		}
+    public function currentRequest()
+    {
+        return $this->getController()->getRequest();
+    }
 
-		if (!$moduleName) {
-			throw new Exception\RuntimeException(sprintf('Not found appropriate module for context %s', $context));
-		}
+    public function currentView()
+    {
+        return $this->getSm()->get('ViewRenderer');
+    }
 
-		return $moduleName;
-	}
+    public function __invoke()
+    {
+        if (!$args = func_get_args()) {
+            return $this;
+        }
+        $name = isset($args[0]) ? $args[0] : self::DEFAULT_NAME;
+        !isset($args[1]) || $this->setContext($args[1]);
 
-
-	protected function prepareContext() {
-		$context = $this->context ?: get_class($this->getController());
-
-		if (is_object($context)) {
-			$context = get_class($context);
-		} elseif (is_array($context)) {
-			$context = implode('\\', $context);
-		}
-
-		return $context;
-	}
-
-	/**
-	 * Get current route controller name
-	 *
-	 * @return string
-	 */
-	public function currentController() {
-		return $this->currentRoute()->getParam('controller');
-	}
-
-	/**
-	 * Get current route action name
-	 *
-	 * @return string
-	 */
-	public function currentAction() {
-		return $this->currentRoute()->getParam('action');
-	}
-
-	/**
-	 * Return current route match
-	 *
-	 * Important: Cache is disabled for correct work of forward plugin
-	 *
-	 * @return RouteMatch
-	 */
-	public function currentRoute() {
-		return $this->getController()->getEvent()->getRouteMatch();
-	}
-
-	public function currentRouter() {
-		return $this->getController()->getEvent()->getRouter();
-	}
-
-	public function currentRequest() {
-		return $this->getController()->getRequest();
-	}
-
-	public function currentView() {
-		return $this->getSm()->get('ViewRenderer');
-	}
-
-	public function __invoke() {
-		if (!$args = func_get_args()) {
-			return $this;
-		}
-
-		$name = isset($args[0]) ? $args[0] : self::DEFAULT_NAME;
-		!isset($args[1]) || $this->setContext($args[1]);
-
-		return $this->run($name);
-	}
-
+        return $this->run($name);
+    }
 }
