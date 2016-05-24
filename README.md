@@ -74,3 +74,10 @@ $action = $this->url('default/id', [
 ]);
 ?>
 ```
+
+### Tricks and tips
+If you use forward plugin and need current (forward) param, next call return expected value
+```php
+$this->current()->getController()->getEvent()->getRouteMatch()->getParam('action');
+```
+In all other case you get real params that is in URL

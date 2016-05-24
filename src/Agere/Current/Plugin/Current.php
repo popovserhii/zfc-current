@@ -22,6 +22,11 @@ class Current extends AbstractPlugin {
 
 	protected $context;
 
+    public function __construct(RouteMatch $route)
+    {
+        $this->route = $route;
+    }
+
 	/**
 	 * @param string $name
 	 * @return string
@@ -130,7 +135,8 @@ class Current extends AbstractPlugin {
 	 */
 	public function currentAction() {
 		return $this->currentRoute()->getParam('action');
-	}
+
+    }
 
 	/**
 	 * Return current route match
@@ -140,7 +146,8 @@ class Current extends AbstractPlugin {
 	 * @return RouteMatch
 	 */
 	public function currentRoute() {
-		return $this->getController()->getEvent()->getRouteMatch();
+		//return $this->getController()->getEvent()->getRouteMatch();
+		return $this->route;
 	}
 
 	public function currentRouter() {

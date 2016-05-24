@@ -3,13 +3,14 @@ namespace Agere\Current;
 
 return [
 	'controller_plugins' => [
-		'invokables' => [
-			'current' => 'Agere\Current\Plugin\Current',
+		'factories' => [
+			'current' => Plugin\Factory\CurrentFactory::class,
 		]
 	],
+
 	'view_helpers' => [
 		'invokables' => [
-			'current' => 'Agere\Current\Helper\Current',
+			'current' => Helper\Current::class,
 		],
 	],
 ];
