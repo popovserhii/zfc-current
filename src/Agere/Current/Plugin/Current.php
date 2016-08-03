@@ -12,6 +12,7 @@
  */
 namespace Agere\Current\Plugin;
 
+use Doctrine\ORM\Tools\Export\ExportException;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Stdlib\Exception;
