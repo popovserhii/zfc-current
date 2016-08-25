@@ -65,8 +65,20 @@ class Current extends AbstractPlugin {
 		return $modules[$this->currentModule($context)];
 	}
 
+    protected function prepareContext() {
+        $context = $this->context ?: get_class($this->getController());
+
+        if (is_object($context)) {
+            $context = get_class($context);
+        } elseif (is_array($context)) {
+            $context = implode('\\', $context);
+        }
+
+        return $context;
+    }
+
 	/**
-	 * * Get current module namespace
+	 * Get current module namespace
 	 *
 	 * @param mixed $context Object, namespace or array of exploded namespace
 	 * @return string
@@ -105,19 +117,6 @@ class Current extends AbstractPlugin {
 		}
 
 		return $moduleName;
-	}
-
-
-	protected function prepareContext() {
-		$context = $this->context ?: get_class($this->getController());
-
-		if (is_object($context)) {
-			$context = get_class($context);
-		} elseif (is_array($context)) {
-			$context = implode('\\', $context);
-		}
-
-		return $context;
 	}
 
 	/**
