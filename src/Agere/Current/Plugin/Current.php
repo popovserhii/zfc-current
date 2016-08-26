@@ -52,7 +52,7 @@ class Current extends AbstractPlugin {
 	 * @param mixed $context Controller object or class name
 	 */
 	protected function setContext($context) {
-		$this->context = $context;
+        $this->context = $context;
 	}
 
 	public function resetContext() {
@@ -75,14 +75,16 @@ class Current extends AbstractPlugin {
 	public function currentModule($context = null) {
 		static $cache;
 
-		$this->context = $context;
+        if ($context) {
+            $this->context = $context;
+        }
 		$context = $this->prepareContext();
 
-		if ($this->context) {
+        if ($this->context) {
 			$this->context = null;
 		}
 
-		if (isset($cache[$context])) {
+        if (isset($cache[$context])) {
 			return $cache[$context];
 		}
 
