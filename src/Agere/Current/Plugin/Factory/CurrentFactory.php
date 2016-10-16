@@ -17,8 +17,10 @@ class CurrentFactory
     public function __invoke(ServiceLocatorInterface $cpm)
     {
         $sm = $cpm->getServiceLocator();
+        $loadedModules = $sm->get('ModuleManager')->getLoadedModules();
         $route = $sm->get('Application')->getMvcEvent()->getRouteMatch();
+        $viewRenderer = $sm->get('ViewRenderer');
 
-        return (new Current($route));
+        return new Current($loadedModules, $route, $viewRenderer);
     }
 }
