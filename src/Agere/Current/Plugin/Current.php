@@ -74,6 +74,10 @@ class Current extends AbstractPlugin
         $this->context = null;
     }
 
+    /**
+     * @param null $context
+     * @return string
+     */
     public function getModule($context = null)
     {
         $modules = $this->getLoadedModules();
