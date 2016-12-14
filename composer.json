@@ -1,5 +1,5 @@
 {
-  "name": "popovsergiy/zfc-current",
+  "name": "popov/zfc-current",
   "description": "Plugin and Helper for get current controller, action, route, request and much more",
   "type": "zf-module",
   "license": "BSD-3-Clause",
