@@ -1,18 +1,18 @@
 <?php
 /**
- * Current Plugin Factory
+ * ZfcCurrent Plugin Factory
  *
- * @category Agere
- * @package Agere_Current
+ * @category Popov
+ * @package Popov_ZfcCurrent
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 23.05.2016 15:44
  */
-namespace Agere\Current\Plugin\Factory;
+namespace Popov\ZfcCurrent\Plugin\Factory;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Agere\Current\Plugin\Current;
+use Popov\ZfcCurrent\Plugin\ZfcCurrent;
 
-class CurrentFactory
+class ZfcCurrentFactory
 {
     public function __invoke(ServiceLocatorInterface $cpm)
     {
@@ -21,6 +21,6 @@ class CurrentFactory
         $route = $sm->get('Application')->getMvcEvent()->getRouteMatch();
         $viewRenderer = $sm->get('ViewRenderer');
 
-        return new Current($loadedModules, $route, $viewRenderer);
+        return new ZfcCurrent($loadedModules, $route, $viewRenderer);
     }
 }

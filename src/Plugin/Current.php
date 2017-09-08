@@ -4,19 +4,19 @@
  * such as namespace, module, controller, action
  * All value is determined relative to current called controller
  *
- * @category Agere
- * @package Agere_Current
+ * @category Popov
+ * @package Popov_ZfcCurrent
  * @author Popov Sergiy <popov@agere.com.ua>
  * @datetime: 17.05.15 18:12
  */
-namespace Agere\Current\Plugin;
+namespace Popov\ZfcCurrent\Plugin;
 
 use Doctrine\ORM\Tools\Export\ExportException;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Stdlib\Exception;
 
-class Current extends AbstractPlugin
+class ZfcCurrent extends AbstractPlugin
 {
     const DEFAULT_NAME = 'module';
 

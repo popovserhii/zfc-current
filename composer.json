@@ -2,7 +2,7 @@
   "name": "popov/zfc-current",
   "description": "Plugin and Helper for get current controller, action, route, request and much more",
   "type": "zf-module",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "keywords": [
     "zf2",
     "current",
@@ -10,9 +10,8 @@
   ],
   "authors": [
     {
-      "name": "Sergiy Popov",
+      "name": "Serhii Popov",
       "email": "popow.sergiy@gmail.com",
-      "homepage": "http://agere.com.ua/",
       "role": "Developer"
     }
   ],
@@ -21,11 +20,8 @@
     "php": ">=5.5"
   },
   "autoload": {
-    "psr-0": {
-      "Agere\\Current": "src/"
-    },
-    "classmap": [
-      "./Module.php"
-    ]
+    "psr-4": {
+      "Popov\\ZfcCurrent\\": "src/"
+    }
   }
 }
