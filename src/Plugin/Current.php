@@ -163,7 +163,6 @@ class ZfcCurrent extends AbstractPlugin
      */
     public function currentRoute()
     {
-        //return $this->getController()->getEvent()->getRouteMatch();
         return $this->route;
     }
 
