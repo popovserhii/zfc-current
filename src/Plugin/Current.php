@@ -16,7 +16,7 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Stdlib\Exception;
 
-class ZfcCurrent extends AbstractPlugin
+class Current extends AbstractPlugin
 {
     const DEFAULT_NAME = 'module';
 

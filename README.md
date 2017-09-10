@@ -1,4 +1,4 @@
-#ZF2 ZfcCurrent Module
+#ZF2 Current Module
 This plugin allow get current namespace, module, controller, action, route, router and request through Controller Plugin or View Helper.
 
 ## Instalation
@@ -16,12 +16,12 @@ And update your vendors
 $ php composer.phar update popovsergiy/zfc-current
 ```
 
-Don't forget Add `'Popov\ZfcCurrent'` to `config/application.config.php`
+Don't forget Add `'Popov\Current'` to `config/application.config.php`
 ```php
 return [
     'modules' => [
     	// ...
-    	'Popov\ZfcCurrent'
+    	'Popov\Current'
     ]
 ]    
 ```
@@ -55,9 +55,9 @@ class PostController extends AbstractActionController {
 ```php
 // your-module/post/index.phtml
 
-ZfcCurrent controller : <?= $this->current('controller') ?>
-ZfcCurrent action : <?= $this->current('action') ?>
-ZfcCurrent module : <?= $this->current('module') ?>
+Current controller : <?= $this->current('controller') ?>
+Current action : <?= $this->current('action') ?>
+Current module : <?= $this->current('module') ?>
 
 <?php
 $action = $this->url('default/id', [

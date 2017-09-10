@@ -2,7 +2,7 @@
 namespace Popov\ZfcCurrent\Helper;
 
 use Zend\View\Helper\AbstractHelper;
-use Popov\ZfcCurrent\Plugin\ZfcCurrent as ZfcCurrentPlugin;
+use Popov\ZfcCurrent\Plugin\Current as CurrentPlugin;
  
 /**
  * Using current plugin
@@ -11,27 +11,27 @@ use Popov\ZfcCurrent\Plugin\ZfcCurrent as ZfcCurrentPlugin;
  * 
  * @author Sergiy Popov
  */
-class ZfcCurrent extends AbstractHelper {
+class Current extends AbstractHelper {
 	
 	/**
-	 * @var ZfcCurrentPlugin
+	 * @var CurrentPlugin
 	 */
     protected $currentPlugin;
 
     /**
-     * @param ZfcCurrentPlugin $currentPlugin
+     * @param CurrentPlugin $currentPlugin
      * @return $this
      */
-    public function setZfcCurrentPlugin(ZfcCurrentPlugin $currentPlugin) {
+    public function setCurrentPlugin(CurrentPlugin $currentPlugin) {
         $this->currentPlugin = $currentPlugin;
 
         return $this;
     }
 
     /**
-     * @return ZfcCurrentPlugin
+     * @return CurrentPlugin
      */
-    public function getZfcCurrentPlugin() {
+    public function getCurrentPlugin() {
         if (null === $this->currentPlugin) {
             $sm = $this->getView()->getHelperPluginManager()->getServiceLocator();
             $this->currentPlugin = $sm->get('ControllerPluginManager')->get('current');
@@ -42,6 +42,6 @@ class ZfcCurrent extends AbstractHelper {
  
     public function __invoke() {
 		$params = func_get_args();
-        return call_user_func_array($this->getZfcCurrentPlugin(), $params);
+        return call_user_func_array($this->getCurrentPlugin(), $params);
     }
 }
