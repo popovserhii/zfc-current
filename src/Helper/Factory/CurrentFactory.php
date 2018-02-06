@@ -10,7 +10,7 @@
 namespace Popov\ZfcCurrent\Plugin\Factory;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Popov\ZfcCurrent\Plugin\Current;
+use Popov\ZfcCurrent\Plugin\CurrentHelper;
 
 class CurrentFactory
 {
@@ -21,6 +21,6 @@ class CurrentFactory
         $route = $sm->get('Application')->getMvcEvent()->getRouteMatch();
         $viewRenderer = $sm->get('ViewRenderer');
 
-        return new Current($loadedModules, $route, $viewRenderer);
+        return new CurrentHelper($loadedModules, $route, $viewRenderer);
     }
 }

@@ -10,7 +10,7 @@ return [
 
 	'view_helpers' => [
 		'invokables' => [
-			'current' => Helper\Current::class,
+			'current' => Helper\CurrentPlugin::class,
 		],
 	],
 ];
