@@ -4,7 +4,7 @@
  *
  * @category Popov
  * @package Popov_ZfcCurrent
- * @author Popov Sergiy <popov@agere.com.ua>
+ * @author Serhii Popov <popow.serhii@gmail.com>
  * @datetime: 25.07.14 15:04
  */
 namespace Popov\ZfcCurrent;

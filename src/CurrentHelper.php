@@ -1,33 +1,133 @@
 <?php
 /**
- * Plugin which allow get current names
+ * Helper which allow get current names
  * such as namespace, module, controller, action
  * All value is determined relative to current called controller
  *
  * @category Popov
  * @package Popov_ZfcCurrent
- * @author Popov Sergiy <popov@agere.com.ua>
+ * @author Serhii Popov <popow.serhii@gmail.com>
  * @datetime: 17.05.15 18:12
  */
-namespace Popov\ZfcCurrent\Plugin;
+namespace Popov\ZfcCurrent;
 
-use Doctrine\ORM\Tools\Export\ExportException;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Zend\Mvc\Router\RouteMatch;
 use Zend\Stdlib\Exception;
 
 class CurrentHelper extends AbstractPlugin
 {
     const DEFAULT_NAME = 'module';
 
+    /**
+     * @var string
+     */
+    protected $defaultContext;
+
+    /**
+     * @var string
+     */
     protected $context;
 
-    public function __construct($loadedModules, RouteMatch $route, $viewRenderer)
+    /**
+     * @var string
+     */
+    protected $resource;
+
+    /**
+     * @var string
+     */
+    protected $action;
+
+    protected $renderer;
+
+    protected $request;
+
+    protected $route;
+
+    protected $loadedModules;
+
+    /*public function __construct($loadedModules, RouteMatch $route, $viewRenderer)
     {
         $this->route = $route;
         $this->loadedModules = $loadedModules;
-        $this->viewRenderer = $viewRenderer;
+        $this->renderer = $viewRenderer;
+    }*/
+
+    public function setDefaultContext($defaultContext)
+    {
+        $this->defaultContext = $defaultContext;
+
+        return $this;
     }
+
+    public function setResource(string $resource)
+    {
+        $this->resource = $resource;
+
+        return $this;
+    }
+
+    public function setAction(string $action)
+    {
+        $this->action = $action;
+
+        return $this;
+    }
+
+    public function setRenderer($renderer)
+    {
+        $this->renderer = $renderer;
+
+        return $this;
+    }
+
+    public function setRequest($request)
+    {
+        $this->request = $request;
+
+        return $this;
+    }
+
+    public function setRoute($route)
+    {
+        $this->route = $route;
+
+        return $this;
+    }
+
+    public function setLoadedModules(array $loadedModules)
+    {
+        $this->loadedModules = $loadedModules;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLoadedModules()
+    {
+        return $this->loadedModules;
+    }
+
+    /**
+     * @param mixed $context Controller object or class name
+     * @return $this
+     */
+    protected function setContext($context)
+    {
+        $this->context = $context;
+
+        return $this;
+    }
+
+    public function resetContext()
+    {
+        $this->context = null;
+
+        return $this;
+    }
+
 
     /**
      * @param string $name
@@ -46,48 +146,19 @@ class CurrentHelper extends AbstractPlugin
     }
 
     /**
-     * @return mixed
-     */
-    public function getLoadedModules()
-    {
-        return $this->loadedModules;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getViewRenderer()
-    {
-        return $this->viewRenderer;
-    }
-
-    /**
-     * @param mixed $context Controller object or class name
-     */
-    protected function setContext($context)
-    {
-        $this->context = $context;
-    }
-
-    public function resetContext()
-    {
-        $this->context = null;
-    }
-
-    /**
      * @param null $context
      * @return string
      */
-    public function getModule($context = null)
+    /*public function getModule($context = null)
     {
         $modules = $this->getLoadedModules();
 
         return $modules[$this->currentModule($context)];
-    }
+    }*/
 
     protected function prepareContext()
     {
-        $context = $this->context ?: get_class($this->getController());
+        $context = $this->context ?: $this->defaultContext;
         if (is_object($context)) {
             $context = get_class($context);
         } elseif (is_array($context)) {
@@ -140,9 +211,9 @@ class CurrentHelper extends AbstractPlugin
      *
      * @return string
      */
-    public function currentController()
+    public function currentResource()
     {
-        return $this->currentRoute()->getParam('controller');
+        return $this->resource;
     }
 
     /**
@@ -152,33 +223,33 @@ class CurrentHelper extends AbstractPlugin
      */
     public function currentAction()
     {
-        return $this->currentRoute()->getParam('action');
+        return $this->action;
     }
 
     /**
      * Return current route match
      * Important: Cache is disabled for correct work of forward plugin
      *
-     * @return RouteMatch
+     * @return object
      */
     public function currentRoute()
     {
         return $this->route;
     }
 
-    public function currentRouter()
+    /*public function currentRouter()
     {
         return $this->getController()->getEvent()->getRouter();
-    }
+    }*/
 
     public function currentRequest()
     {
-        return $this->getController()->getRequest();
+        return $this->request;
     }
 
-    public function currentView()
+    public function currentRenderer()
     {
-        return $this->getViewRenderer();
+        return $this->renderer;
     }
 
     public function __invoke()
@@ -186,7 +257,7 @@ class CurrentHelper extends AbstractPlugin
         if (!$args = func_get_args()) {
             return $this;
         }
-        $name = isset($args[0]) ? $args[0] : self::DEFAULT_NAME;
+        $name = $args[0] ?? self::DEFAULT_NAME;
         !isset($args[1]) || $this->setContext($args[1]);
 
         return $this->run($name);

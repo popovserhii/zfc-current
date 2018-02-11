@@ -1,9 +1,9 @@
 <?php
 
-namespace Popov\ZfcCurrent\Helper;
+namespace Popov\ZfcCurrent\View;
 
 use Zend\View\Helper\AbstractHelper;
-use Popov\ZfcCurrent\CurrentHelper;
+use Popov\ZfcCurrent\CurrentHelper as ZfcCurrentHelper;
 
 /**
  * Using current plugin
@@ -11,22 +11,19 @@ use Popov\ZfcCurrent\CurrentHelper;
  *
  * @author Serhii Popov
  */
-class CurrentPlugin extends AbstractHelper
+class CurrentHelper extends AbstractHelper
 {
     /**
-     * @var CurrentHelper
+     * @var ZfcCurrentHelper
      */
     protected $currentHelper;
 
     /**
-     * @param CurrentHelper $currentHelper
-     * @return $this
+     * @param ZfcCurrentHelper $currentHelper
      */
-    public function setCurrentHelper(CurrentHelper $currentHelper)
+    public function __construct(ZfcCurrentHelper $currentHelper)
     {
         $this->currentHelper = $currentHelper;
-
-        return $this;
     }
 
     /**
