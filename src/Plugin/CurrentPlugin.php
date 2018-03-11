@@ -1,6 +1,6 @@
 <?php
 
-namespace Popov\ZfcCurrent\Helper;
+namespace Popov\ZfcCurrent\Plugin;
 
 use Zend\View\Helper\AbstractHelper;
 use Popov\ZfcCurrent\CurrentHelper;

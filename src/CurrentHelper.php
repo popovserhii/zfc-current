@@ -11,10 +11,10 @@
  */
 namespace Popov\ZfcCurrent;
 
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+//use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Stdlib\Exception;
 
-class CurrentHelper extends AbstractPlugin
+class CurrentHelper /*extends AbstractPlugin*/
 {
     const DEFAULT_NAME = 'module';
 
@@ -43,6 +43,12 @@ class CurrentHelper extends AbstractPlugin
     protected $request;
 
     protected $route;
+
+    /** @var array */
+    protected $matchedRouteParams;
+
+    /** @var string */
+    protected $matchedRouteName;
 
     protected $loadedModules;
 
@@ -91,6 +97,20 @@ class CurrentHelper extends AbstractPlugin
     public function setRoute($route)
     {
         $this->route = $route;
+
+        return $this;
+    }
+
+    public function setMatchedRouteParams($params)
+    {
+        $this->matchedRouteParams = $params;
+
+        return $this;
+    }
+
+    public function setMatchedRouteName($name)
+    {
+        $this->matchedRouteName = $name;
 
         return $this;
     }
@@ -235,6 +255,26 @@ class CurrentHelper extends AbstractPlugin
     public function currentRoute()
     {
         return $this->route;
+    }
+
+    /**
+     * Get current route matched params
+     *
+     * @return array
+     */
+    public function currentMatchedRouteParams()
+    {
+        return $this->matchedRouteParams;
+    }
+
+    /**
+     * Get current route matched name
+     *
+     * @return string
+     */
+    public function currentMatchedRouteName()
+    {
+        return $this->matchedRouteName;
     }
 
     /*public function currentRouter()
