@@ -45,10 +45,10 @@ class CurrentHelper /*extends AbstractPlugin*/
     protected $route;
 
     /** @var array */
-    protected $matchedRouteParams;
+    protected $routeParams;
 
     /** @var string */
-    protected $matchedRouteName;
+    protected $routeName;
 
     protected $loadedModules;
 
@@ -101,16 +101,16 @@ class CurrentHelper /*extends AbstractPlugin*/
         return $this;
     }
 
-    public function setMatchedRouteParams($params)
+    public function setRouteParams($params)
     {
-        $this->matchedRouteParams = $params;
+        $this->routeParams = $params;
 
         return $this;
     }
 
-    public function setMatchedRouteName($name)
+    public function setRouteName($name)
     {
-        $this->matchedRouteName = $name;
+        $this->routeName = $name;
 
         return $this;
     }
@@ -262,9 +262,9 @@ class CurrentHelper /*extends AbstractPlugin*/
      *
      * @return array
      */
-    public function currentMatchedRouteParams()
+    public function currentRouteParams()
     {
-        return $this->matchedRouteParams;
+        return $this->routeParams;
     }
 
     /**
@@ -272,9 +272,9 @@ class CurrentHelper /*extends AbstractPlugin*/
      *
      * @return string
      */
-    public function currentMatchedRouteName()
+    public function currentRouteName()
     {
-        return $this->matchedRouteName;
+        return $this->routeName;
     }
 
     /*public function currentRouter()
