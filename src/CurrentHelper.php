@@ -66,6 +66,11 @@ class CurrentHelper /*extends AbstractPlugin*/
         return $this;
     }
 
+    public function getDefaultContext()
+    {
+        return $this->defaultContext;
+    }
+
     public function setResource(string $resource)
     {
         $this->resource = $resource;
