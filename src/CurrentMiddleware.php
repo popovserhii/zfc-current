@@ -20,9 +20,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Stagem\ZfcAction\Page\RendererMiddleware;
 use Zend\Expressive\Router\RouteResult;
-use Zend\Filter\Word\DashToCamelCase;
 use Zend\Stdlib\Exception\RuntimeException;
 use Stagem\ZfcAction\Page\ConnectivePage;
 
@@ -68,11 +66,8 @@ class CurrentMiddleware implements MiddlewareInterface
 
     protected function configureCurrentPlugin(ServerRequestInterface $request)
     {
-        $filter = new DashToCamelCase();
         $route = $request->getAttribute(RouteResult::class);
-        $this->currentHelper->setResource(
-            lcfirst($filter->filter($request->getAttribute('resource', ConnectivePage::DEFAULT_RESOURCE)))
-        );
+        $this->currentHelper->setResource($request->getAttribute('resource', ConnectivePage::DEFAULT_RESOURCE));
         $this->currentHelper->setAction($request->getAttribute('action', ConnectivePage::DEFAULT_ACTION));
         $this->currentHelper->setRequest($request);
         $this->currentHelper->setRoute($route->getMatchedRoute());
