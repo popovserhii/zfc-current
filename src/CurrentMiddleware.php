@@ -66,48 +66,10 @@ class CurrentMiddleware implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    protected function getActionClass($request)
-    {
-        $name = [];
-        //$name['resource'] = lcfirst($this->currentHelper->currentResource());
-        $name['namespace'] = $this->getNamespace(lcfirst($this->currentHelper->currentResource()));
-        $name['dir'] = 'Action';
-        //$area = $route->getOptions()['area'] ?? RendererMiddleware::AREA_DEFAULT;
-        $area = $request->getAttribute('area', RendererMiddleware::AREA_DEFAULT);
-        if ($area !== RendererMiddleware::AREA_DEFAULT) {
-            $name['area'] = ucfirst($area);
-        }
-        $name['action'] = ucfirst($this->currentHelper->currentAction());
-
-        //unset($name['resource']);
-
-        return implode('\\', $name) . 'Action';
-    }
-
-    protected function getNamespace($mnemo)
-    {
-        $namespace = null;
-        if ($this->moduleHelper && ($module = $this->moduleHelper->getBy($mnemo, 'mnemo'))) {
-            $namespace = $module->getName();
-        } elseif (isset($this->config['middleware'][$mnemo])) {
-            $namespace = $this->config['middleware'][$mnemo];
-        } else {
-            throw new RuntimeException(sprintf(
-                'Module for "%s" in not registered in configuration or database',
-                $mnemo
-            ));
-        }
-
-        return $namespace;
-    }
-
     protected function configureCurrentPlugin(ServerRequestInterface $request)
     {
         $filter = new DashToCamelCase();
-
-
         $route = $request->getAttribute(RouteResult::class);
-
         $this->currentHelper->setResource(
             lcfirst($filter->filter($request->getAttribute('resource', ConnectivePage::DEFAULT_RESOURCE)))
         );
@@ -116,9 +78,5 @@ class CurrentMiddleware implements MiddlewareInterface
         $this->currentHelper->setRoute($route->getMatchedRoute());
         $this->currentHelper->setRouteName($route->getMatchedRouteName());
         $this->currentHelper->setRouteParams($route->getMatchedParams());
-
-
-        $actionClass = $this->getActionClass($request);
-        $this->currentHelper->setDefaultContext($actionClass);
     }
 }
