@@ -19,7 +19,11 @@ class Module implements ConfigProviderInterface
 {
     public function getConfig()
     {
-        return include __DIR__ . '/../config/module.config.php';
+        $config = require __DIR__ . '/../config/module.config.php';
+        $config['service_manager'] = $config['dependencies'];
+        unset($config['dependencies']);
+
+        return $config;
     }
 
     public function onBootstrap(MvcEvent $e)
