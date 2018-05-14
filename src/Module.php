@@ -33,29 +33,19 @@ class Module implements ConfigProviderInterface
     $moduleRouteListener->attach($eventManager);
     $container = $e->getApplication()->getServiceManager();
 
-    //$eventManager = $manager->getEventManager();
     $sharedEventManager = $eventManager->getSharedManager();
     // Register the event listener method.
     //$sharedEventManager->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, function(MvcEvent $mvcEvent) use ($container) {
     $eventManager->attach( MvcEvent::EVENT_DISPATCH, function(MvcEvent $mvcEvent) use ($container) {
-
-        $controller = $mvcEvent->getTarget();
-        //$currentPlugin = $sm->get('ControllerPluginManager')->get('current');
-        //$currentPlugin->setController($controller);
-
-
-        //$eventManager = $mvcEvent->getTarget()->getEventManager();
-        //$sm = $e->getApplication()->getServiceManager();
-        $request = $controller->getRequest();
-
+        $request = $mvcEvent->getRequest();
         /** @var RouteMatch $route */
-        $route = $container->get('Application')->getMvcEvent()->getRouteMatch();
+        #$route = $container->get('Application')->getMvcEvent()->getRouteMatch();
+        $route = $mvcEvent->getRouteMatch();
 
         /** @var CurrentHelper $currentHelper */
         $currentHelper = $container->get(CurrentHelper::class);
 
-        //$route = $request->getAttribute(RouteResult::class);
-        $currentHelper->setResource($route->getParam('controller', 'index'));
+        $currentHelper->setResource($route->getParam('resource', 'index'));
         $currentHelper->setAction($route->getParam('action', 'index'));
         $currentHelper->setRequest($request);
         $currentHelper->setRoute($route);
