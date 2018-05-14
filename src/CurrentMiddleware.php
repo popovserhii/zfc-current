@@ -56,11 +56,6 @@ class CurrentMiddleware implements MiddlewareInterface
     {
         $this->configureCurrentPlugin($request);
 
-        //$filter = new DashToCamelCase();
-
-
-
-
         return $handler->handle($request);
     }
 
