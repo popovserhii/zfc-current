@@ -2,7 +2,7 @@
 
 namespace Popov\ZfcCurrent\Plugin;
 
-use Zend\View\Helper\AbstractHelper;
+use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Popov\ZfcCurrent\CurrentHelper;
 
 /**
@@ -11,22 +11,16 @@ use Popov\ZfcCurrent\CurrentHelper;
  *
  * @author Serhii Popov
  */
-class CurrentPlugin extends AbstractHelper
+class CurrentPlugin extends AbstractPlugin
 {
     /**
      * @var CurrentHelper
      */
     protected $currentHelper;
 
-    /**
-     * @param CurrentHelper $currentHelper
-     * @return $this
-     */
-    public function setCurrentHelper(CurrentHelper $currentHelper)
+    public function __construct(CurrentHelper $currentHelper)
     {
         $this->currentHelper = $currentHelper;
-
-        return $this;
     }
 
     /**
@@ -34,10 +28,10 @@ class CurrentPlugin extends AbstractHelper
      */
     public function getCurrentHelper()
     {
-        if (null === $this->currentHelper) {
-            $sm = $this->getView()->getHelperPluginManager()->getServiceLocator();
-            $this->currentHelper = $sm->get('ControllerPluginManager')->get('current');
-        }
+        #if (null === $this->currentHelper) {
+        #    $sm = $this->getView()->getHelperPluginManager()->getServiceLocator();
+        #    $this->currentHelper = $sm->get('ControllerPluginManager')->get('current');
+        #}
 
         return $this->currentHelper;
     }

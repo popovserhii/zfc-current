@@ -13,8 +13,11 @@ return [
     ],
 
 	'controller_plugins' => [
+        'aliases' => [
+            'current' => Plugin\CurrentPlugin::class,
+        ],
 		'factories' => [
-			'current' => Plugin\Factory\CurrentFactory::class,
+            Plugin\CurrentPlugin::class => Plugin\Factory\CurrentPluginFactory::class,
 		]
 	],
 
