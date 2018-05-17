@@ -59,7 +59,7 @@ class Module implements ConfigProviderInterface
             /** @var CurrentHelper $currentHelper */
             $currentHelper = $container->get(CurrentHelper::class);
             $currentHelper->setDefaultContext($controller);
-            $currentHelper->setResource($route->getParam('resource', 'index'));
+            $currentHelper->setController($route->getParam('controller', 'index'));
             $currentHelper->setAction($route->getParam('action', 'index'));
             $currentHelper->setRequest($request);
             $currentHelper->setRoute($route);

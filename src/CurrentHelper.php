@@ -31,7 +31,7 @@ class CurrentHelper /*extends AbstractPlugin*/
     /**
      * @var string
      */
-    protected $resource;
+    protected $controller;
 
     /**
      * @var string
@@ -71,9 +71,9 @@ class CurrentHelper /*extends AbstractPlugin*/
         return $this->defaultContext;
     }
 
-    public function setResource(string $resource)
+    public function setController(string $controller)
     {
-        $this->resource = $resource;
+        $this->controller = $controller;
 
         return $this;
     }
@@ -170,17 +170,6 @@ class CurrentHelper /*extends AbstractPlugin*/
         ));
     }
 
-    /**
-     * @param null $context
-     * @return string
-     */
-    /*public function getModule($context = null)
-    {
-        $modules = $this->getLoadedModules();
-
-        return $modules[$this->currentModule($context)];
-    }*/
-
     protected function prepareContext()
     {
         $context = $this->context ?: $this->defaultContext;
@@ -236,9 +225,9 @@ class CurrentHelper /*extends AbstractPlugin*/
      *
      * @return string
      */
-    public function currentResource()
+    public function currentController()
     {
-        return $this->resource;
+        return $this->controller;
     }
 
     /**

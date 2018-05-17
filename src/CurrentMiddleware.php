@@ -62,7 +62,7 @@ class CurrentMiddleware implements MiddlewareInterface
     protected function configureCurrentPlugin(ServerRequestInterface $request)
     {
         $route = $request->getAttribute(RouteResult::class);
-        $this->currentHelper->setResource($request->getAttribute('resource', ConnectivePage::DEFAULT_RESOURCE));
+        $this->currentHelper->setController($request->getAttribute('controller', ConnectivePage::DEFAULT_CONTROLLER));
         $this->currentHelper->setAction($request->getAttribute('action', ConnectivePage::DEFAULT_ACTION));
         $this->currentHelper->setRequest($request);
         $this->currentHelper->setRoute($route->getMatchedRoute());
