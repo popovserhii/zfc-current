@@ -59,7 +59,13 @@ class CurrentHelper /*extends AbstractPlugin*/
         $this->renderer = $viewRenderer;
     }*/
 
-    public function setDefaultContext($defaultContext)
+    /**
+     * Default context must be object (such as Controller or Action).
+     *
+     * @param object $defaultContext
+     * @return $this
+     */
+    public function setDefaultContext(object $defaultContext)
     {
         $this->defaultContext = $defaultContext;
 
@@ -286,6 +292,9 @@ class CurrentHelper /*extends AbstractPlugin*/
         return $this->renderer;
     }
 
+    /**
+     * @return $this|string
+     */
     public function __invoke()
     {
         if (!$args = func_get_args()) {
