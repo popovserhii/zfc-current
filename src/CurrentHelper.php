@@ -65,7 +65,7 @@ class CurrentHelper /*extends AbstractPlugin*/
      * @param object $defaultContext
      * @return $this
      */
-    public function setDefaultContext(object $defaultContext)
+    public function setDefaultContext($defaultContext)
     {
         $this->defaultContext = $defaultContext;
 
