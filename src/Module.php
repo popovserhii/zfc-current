@@ -38,7 +38,7 @@ class Module implements ConfigProviderInterface
         $moduleRouteListener->attach($eventManager);
 
         // Register the event listener method.
-        $sharedEvents->attach(AbstractController::class,MvcEvent::EVENT_DISPATCH, function(MvcEvent $mvcEvent) use ($container) {
+        $sharedEvents->attach(AbstractController::class, MvcEvent::EVENT_DISPATCH, function(MvcEvent $mvcEvent) use ($container) {
             // The ZfcCurrent module is adapted for ZF3 MVC and ZF3 Expressive
             // such well as support ZF3+Middleware combination.
             // Keep in mind if you use ZF3+Middleware combination you will get Zend\Mvc\Controller\MiddlewareController
