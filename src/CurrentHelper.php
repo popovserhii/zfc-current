@@ -44,20 +44,16 @@ class CurrentHelper /*extends AbstractPlugin*/
 
     protected $route;
 
-    /** @var array */
-    protected $routeParams;
-
     /** @var string */
     protected $routeName;
 
-    protected $loadedModules;
+    /** @var array */
+    protected $routeParams = [];
+    
+    /** @var array */
+    protected $headers = [];
 
-    /*public function __construct($loadedModules, RouteMatch $route, $viewRenderer)
-    {
-        $this->route = $route;
-        $this->loadedModules = $loadedModules;
-        $this->renderer = $viewRenderer;
-    }*/
+    protected $loadedModules;
 
     /**
      * Default context must be object (such as Controller or Action).
@@ -115,6 +111,13 @@ class CurrentHelper /*extends AbstractPlugin*/
     public function setRouteParams($params)
     {
         $this->routeParams = $params;
+
+        return $this;
+    }
+
+    public function setHeaders($headers)
+    {
+        $this->headers = $headers;
 
         return $this;
     }
@@ -277,10 +280,20 @@ class CurrentHelper /*extends AbstractPlugin*/
         return $this->routeName;
     }
 
-    /*public function currentRouter()
+    /**
+     * Ger current request's headers
+     */
+    public function currentHeaders()
     {
-        return $this->getController()->getEvent()->getRouter();
-    }*/
+        if (!$this->headers) {
+            $request = $this->currentRequest();
+            if (method_exists($request, 'getHeaders')) {
+                $this->headers = $request->getHeaders();
+            }
+        }
+
+        return $this->headers;
+    }
 
     public function currentRequest()
     {
